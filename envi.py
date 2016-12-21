@@ -88,6 +88,8 @@ class Task:
         self.__start_time = 0
         self.running = False
 
+        self.timeline = []
+
     def life_remain(self):
         if not self.running:
             return self.actual_rt - self.runtime
@@ -106,10 +108,17 @@ class Task:
         self.runtime += Task.clock.time - self.__start_time
         self.running = False
 
+        self.timeline.append((self.__start_time, self.clock.time))
+
     def finish(self):
         print self, 'finished',
         print 'at %d' % Task.clock.time
         self.running = False
+
+        self.timeline.append((self.__start_time, self.clock.time))
+        self.turnover = self.clock.time - self.emerge_time
+        self.weighted_turnover = 1/(self.actual_rt * 1.0 / self.turnover)
+
 
     def __str__(self):
         return '<Task id:%d>' % self.id

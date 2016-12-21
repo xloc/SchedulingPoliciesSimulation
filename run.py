@@ -15,7 +15,18 @@ tasks = [
 ft = e.FutureTasks(tasks)
 
 import scheduler_base as schb
-sch = schb.FIFOScheduler()
-# sch = schb.SJFScheduler()
+# sch = schb.FIFOScheduler()
+sch = schb.SJFScheduler()
 
 clock.work(ft, sch)
+
+print "-" * 50
+
+worktime = sum([t.actual_rt for t in tasks])
+for t in tasks:
+    time_pattern = list(' ' * worktime)
+    for st,ed in t.timeline:
+        time_pattern[st:ed] = '-'*(ed-st)
+    time_pattern = ''.join(time_pattern)
+
+    print str(t), '|', time_pattern, '| %5d | %.2f' % (t.turnover, t.weighted_turnover)
