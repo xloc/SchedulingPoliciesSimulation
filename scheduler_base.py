@@ -53,3 +53,14 @@ class FIFOScheduler(Scheduler):
         self.ready_tasks.remove(choice)
 
         self.set_current(choice)
+
+
+class SJFScheduler(Scheduler):
+    def __init__(self):
+        Scheduler.__init__(self)
+
+    def switch(self):
+        choice = min(self.ready_tasks, key=lambda a: a.expected_rt)
+        self.ready_tasks.remove(choice)
+
+        self.set_current(choice)
