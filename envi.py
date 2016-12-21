@@ -17,6 +17,7 @@ class FutureTasks:
         # type: () -> Task
         return self.tasks.popleft()
 
+
 class Clock:
     def __init__(self):
         # type: (FutureTasks, Scheduler) -> None
@@ -69,7 +70,17 @@ class Task:
     global clock
     clk = clock
 
+    count = 0
+
+    @classmethod
+    def gen_id(cls):
+        id = cls.count
+        cls.count += 1
+        return id
+
     def __init__(self, emerge_time, actual_rt, expected_rt=0):
+        self.id = Task.gen_id()
+
         self.emerge_time = emerge_time
         self.expected_rt = expected_rt
         self.actual_rt = actual_rt
@@ -81,11 +92,19 @@ class Task:
         return self.actual_rt - self.runtime
 
     def start(self):
+        print self, 'starts',
+        print 'at %d' % Task.clk.time
         self.__start_time = Task.clk.time
 
     def pause(self):
+        print self, 'working for %d and pauses' % (Task.clk.time - self.__start_time),
+        print 'at %d' % Task.clk.time
         self.runtime += Task.clk.time - self.__start_time
 
     def finish(self):
+        print self, 'finished',
+        print 'at %d' % Task.clk.time
         pass
 
+    def __str__(self):
+        return '<Task id:%d>' % self.id
