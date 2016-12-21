@@ -63,13 +63,8 @@ class Clock:
                 break
 
 
-clock = Clock()
-
-
 class Task:
-    global clock
-    clk = clock
-
+    clock = None
     count = 0
 
     @classmethod
@@ -77,6 +72,10 @@ class Task:
         id = cls.count
         cls.count += 1
         return id
+
+    @classmethod
+    def set_clock(cls, clk):
+        cls.clock = clk
 
     def __init__(self, emerge_time, actual_rt, expected_rt=0):
         self.id = Task.gen_id()
@@ -93,17 +92,17 @@ class Task:
 
     def start(self):
         print self, 'starts',
-        print 'at %d' % Task.clk.time
-        self.__start_time = Task.clk.time
+        print 'at %d' % Task.clock.time
+        self.__start_time = Task.clock.time
 
     def pause(self):
-        print self, 'working for %d and pauses' % (Task.clk.time - self.__start_time),
-        print 'at %d' % Task.clk.time
-        self.runtime += Task.clk.time - self.__start_time
+        print self, 'working for %d and pauses' % (Task.clock.time - self.__start_time),
+        print 'at %d' % Task.clock.time
+        self.runtime += Task.clock.time - self.__start_time
 
     def finish(self):
         print self, 'finished',
-        print 'at %d' % Task.clk.time
+        print 'at %d' % Task.clock.time
         pass
 
     def __str__(self):

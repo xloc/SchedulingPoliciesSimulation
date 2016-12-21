@@ -2,6 +2,8 @@ import envi as e
 
 clock = e.Clock()
 
+e.Task.set_clock(clock)
+
 tasks = [
     e.Task(0, 1),
     e.Task(1, 100),
