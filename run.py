@@ -15,7 +15,7 @@ tasks = [
 ft = e.FutureTasks(tasks)
 
 import scheduler_base as schb
-# sch = schb.FIFOScheduler()
-sch = schb.SJFScheduler()
+sch = schb.FIFOScheduler()
+# sch = schb.SJFScheduler()
 
 clock.work(ft, sch)

@@ -58,6 +58,14 @@ class FIFOScheduler(Scheduler):
 class SJFScheduler(Scheduler):
     def __init__(self):
         Scheduler.__init__(self)
+        self.is_first_arise = True
+
+    def new_arise(self, task):
+        self.ready_tasks.append(task)
+
+        if self.is_first_arise:
+            self.is_first_arise = False
+            self.switch()
 
     def switch(self):
         choice = min(self.ready_tasks, key=lambda a: a.expected_rt)

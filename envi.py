@@ -86,24 +86,30 @@ class Task:
         self.runtime = 0
 
         self.__start_time = 0
+        self.running = False
 
     def life_remain(self):
-        return self.actual_rt - self.runtime
+        if not self.running:
+            return self.actual_rt - self.runtime
+        else:
+            return self.actual_rt - self.runtime - (Task.clock.time - self.__start_time)
 
     def start(self):
         print self, 'starts',
         print 'at %d' % Task.clock.time
         self.__start_time = Task.clock.time
+        self.running = True
 
     def pause(self):
         print self, 'working for %d and pauses' % (Task.clock.time - self.__start_time),
         print 'at %d' % Task.clock.time
         self.runtime += Task.clock.time - self.__start_time
+        self.running = False
 
     def finish(self):
         print self, 'finished',
         print 'at %d' % Task.clock.time
-        pass
+        self.running = False
 
     def __str__(self):
         return '<Task id:%d>' % self.id
