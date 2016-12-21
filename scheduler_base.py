@@ -45,11 +45,19 @@ def maxi(iterable, key):
 class FIFOScheduler(Scheduler):
     def __init__(self):
         Scheduler.__init__(self)
+        self.is_first_arise = True
+
+    def new_arise(self, task):
+        self.ready_tasks.append(task)
+
+        if self.is_first_arise:
+            self.is_first_arise = False
+            self.switch()
 
     def switch(self):
 
         # i, choice = maxi(self.ready_tasks, key=lambda a: a.emerge_time)
-        choice = max(self.ready_tasks, key=lambda a: a.emerge_time)
+        choice = min(self.ready_tasks, key=lambda a: a.emerge_time)
         self.ready_tasks.remove(choice)
 
         self.set_current(choice)
