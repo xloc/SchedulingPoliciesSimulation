@@ -34,7 +34,7 @@ def maxi(iterable, key):
     mx = -10000000
     idx = 0
 
-    for i,item in enumerate(iterable):
+    for i, item in enumerate(iterable):
         if key(item) > mx:
             mx = key(item)
             idx = i

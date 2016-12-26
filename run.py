@@ -1,4 +1,5 @@
 import envi as e
+import scheduler_base as schb
 
 
 # Initialize Simulation
@@ -15,9 +16,11 @@ tasks = [
 ft = e.FutureTasks(tasks)
 
 
-import scheduler_base as schb
+# Initialize Scheduler
+
 # sch = schb.FIFOScheduler()
 sch = schb.SJFScheduler()
+
 
 # Run Simulation
 clock.work(ft, sch)
@@ -28,7 +31,7 @@ print "-" * 50
 worktime = sum([t.actual_rt for t in tasks])
 for t in tasks:
     time_pattern = list(' ' * worktime)
-    for st,ed in t.timeline:
+    for st, ed in t.timeline:
         time_pattern[st:ed] = '-'*(ed-st)
     time_pattern = ''.join(time_pattern)
 

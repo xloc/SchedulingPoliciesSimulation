@@ -1,23 +1,6 @@
 from collections import deque
 
 
-class FutureTasks:
-    def __init__(self, tasks_list):
-        # type: (list, Scheduler) -> None
-        tasks_list.sort(key=lambda a:a.emerge_time)
-        self.tasks = deque(tasks_list)
-
-    def get_next_in_due(self):
-        if len(self.tasks) == 0:
-            return None
-        else:
-            return self.tasks[0]
-
-    def pop_next_in_due(self):
-        # type: () -> Task
-        return self.tasks.popleft()
-
-
 class Clock:
     def __init__(self):
         # type: (FutureTasks, Scheduler) -> None
@@ -69,9 +52,9 @@ class Task:
 
     @classmethod
     def gen_id(cls):
-        id = cls.count
+        identifier = cls.count
         cls.count += 1
-        return id
+        return identifier
 
     @classmethod
     def set_clock(cls, clk):
@@ -89,6 +72,8 @@ class Task:
         self.running = False
 
         self.timeline = []
+        self.turnover = None
+        self.weighted_turnover = None
 
     def life_remain(self):
         if not self.running:
@@ -119,6 +104,22 @@ class Task:
         self.turnover = self.clock.time - self.emerge_time
         self.weighted_turnover = 1/(self.actual_rt * 1.0 / self.turnover)
 
-
     def __str__(self):
         return '<Task id:%d>' % self.id
+
+
+class FutureTasks:
+    def __init__(self, tasks_list):
+        # type: (list, Scheduler) -> None
+        tasks_list.sort(key=lambda a: a.emerge_time)
+        self.tasks = deque(tasks_list)
+
+    def get_next_in_due(self):
+        if len(self.tasks) == 0:
+            return None
+        else:
+            return self.tasks[0]
+
+    def pop_next_in_due(self):
+        # type: () -> Task
+        return self.tasks.popleft()
