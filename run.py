@@ -1,7 +1,8 @@
 import envi as e
 
-clock = e.Clock()
 
+# Initialize Simulation
+clock = e.Clock()
 e.Task.set_clock(clock)
 
 tasks = [
@@ -11,17 +12,19 @@ tasks = [
     e.Task(3, 2, 2),
     e.Task(4, 4, 4)
 ]
-
 ft = e.FutureTasks(tasks)
+
 
 import scheduler_base as schb
 # sch = schb.FIFOScheduler()
 sch = schb.SJFScheduler()
 
+# Run Simulation
 clock.work(ft, sch)
 
-print "-" * 50
 
+# Print Report
+print "-" * 50
 worktime = sum([t.actual_rt for t in tasks])
 for t in tasks:
     time_pattern = list(' ' * worktime)
